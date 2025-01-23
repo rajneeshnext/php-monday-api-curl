@@ -1,4 +1,6 @@
- $update_monday_query = 'mutation {
+<?php
+include "common-functions.php";
+$update_monday_query = 'mutation {
                       duplicate_board(board_id: 7321410389, board_name: "Court Cases - '.$monday_row_item_id.'", duplicate_type: duplicate_board_with_structure) {
                         board {
                           id
