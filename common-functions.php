@@ -34,3 +34,42 @@ function getHttpCode($http_response_header)
     }
     return 0;
 }
+function getPdfFromMonday($item_id, $token){
+    $board_id = "111111";
+    $column_id = "files6";
+    $query= '{ 
+                items(ids: ["'.$item_id.'"]) {
+                  column_values(ids: "'.$column_id.'"){
+                    id
+                    value
+                    text
+                  }
+                }
+              }';
+    $assetID = array();
+    $pdfs = mondayCheckContacts($query, $token);
+    if(isset($pdfs['data']['items'][0]['column_values'][0]['value'])){
+        $pdfs1 = $pdfs['data']['items'][0]['column_values'][0]['value'];
+        $responseContent = json_decode($pdfs1, true);
+        //print_r($responseContent);
+        foreach($responseContent['files'] as $file){
+            $assetID[] = $file['assetId'];
+        }
+    }      
+    return $assetID;
+}            
+function getPublicURL($asset_id, $token){
+    $query= '{ 
+                 assets(ids: '.$asset_id.') {
+                    public_url
+                }
+              }';
+    $api_response = mondayCheckContacts($query, $token);
+    //echo "<pre>";print_r($api_response);
+    $public_url = $api_response['data']['assets'][0]['public_url'] ?? null;
+    if ($public_url) {
+        return $public_url;
+    } else {
+        return "";
+    }
+}
