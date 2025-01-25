@@ -233,18 +233,12 @@ function getPdfFromMonday($item_id, $token){
     }      
     return $assetID;
 }            
-function getPublicURL($asset_id, $token){
-    $query= '{ 
-                 assets(ids: '.$asset_id.') {
-                    public_url
-                }
-              }';
-    $api_response = mondayCheckContacts($query, $token);
-    //echo "<pre>";print_r($api_response);
-    $public_url = $api_response['data']['assets'][0]['public_url'] ?? null;
-    if ($public_url) {
-        return $public_url;
-    } else {
-        return "";
-    }
+function row_update_log($item_id., $text_body.){
+    $query = '
+                        create_update (item_id: "'.$item_id.'", body: "'.$text_body.'") {
+                                    id
+                        }';
+    $query_ends = "}";
+    echo $query = $query_begin.$query.$query_ends;
+    mondayInsertContacts($query); 
 }
